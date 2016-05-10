@@ -1,0 +1,17 @@
+{
+  "name": "udemy-price-alerts",
+  "version": "1.0.0",
+  "description": "alerts subscribers about paid Udemy courses that have gone free",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielrobertson/UdemyPriceAlerts.git"
+  },
+  "author": "danielrobertson",
+  "dependencies": {
+    "request": "2.72.0", 
+    "mysql": "2.10.2"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/danielrobertson/UdemyPriceAlerts#readme"
+}
