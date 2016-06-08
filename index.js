@@ -23,6 +23,7 @@ var options = {
     }
 };
 
+
 request(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
         connection.query("select * from price", function(err, rows, fields) {
@@ -32,16 +33,15 @@ request(options, function(error, response, body) {
 
             var courseList = JSON.parse(body).results;
             courseList.forEach(function(course) {
+            	var newPrice = Number(course.price.replace("$", "")); 
                 var isNewCourse = true;
                 rows.forEach(function(row) {
-
                     if (row.title === course.title) {
-                    	console.log("Not new course\n" + course.title); 
-                        console.log("Processing course: " + course.title + ", price: " + course.price);
+                        console.log("Processing course price check: " + course.title + ", $" + row.price + " -> $" + newPrice);
                         isNewCourse = false;
 
-                        if (course.price < row.price) {
-                            console.log("\tPrice has dropped for course: " + course.title + " from " + row.price + " to " + course.price);
+                        if (newPrice < row.price) {
+                            console.log("\tPrice has dropped for course: " + course.title + ", $" + row.price + " -> $" + newPrice);
 
                             // send alert to user about this price drop 
 
@@ -53,8 +53,19 @@ request(options, function(error, response, body) {
 
                 if (isNewCourse) {
                     // add course to datastore 
-                    console.log("New course found:");
-                    console.log(course); 
+                    console.log("Adding new course: " + course.title + " " + course.price);
+
+                    var newCourseData = {
+                        title: course.title,
+                        price: course.price.replace("$", "")
+                    }
+
+                    connection.query("insert into price set ?", newCourseData, function(err, result) {
+                        if (err) {
+                            throw err;
+                        }
+                    });
+
                 }
 
             });
@@ -62,8 +73,6 @@ request(options, function(error, response, body) {
 
 
         });
-
-        connection.end();
 
     } else {
         console.log("Error request course info from Udemy");
