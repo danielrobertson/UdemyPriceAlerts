@@ -3,38 +3,30 @@ var mysql = require("mysql");
 
 // establish database connection 
 var connection = mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
+    host: 'localhost',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_UDEMY_PRICES
 });
 
 connection.connect();
 
+var clientId = process.env.UDEMY_CLIENT_ID; 
+var clientSecret = process.env.UDEMY_CLIENT_SECRET; 
+var options = {
+  url: "https://www.udemy.com/api-2.0/courses/",
+  headers: {
+    clientId: clientSecret
+  }
+};
+
 // get course information from Udemy 
-var udemyCoursesEndpoint = "https://www.udemy.com/api-2.0/courses/";
-//request(udemyCoursesEndpoint, function (error, response, body) {
-	//if (!error && response.statusCode == 200) {
+request(options, function (error, response, body) {
+	if (!error && response.statusCode == 200) {
 
-		// mock data for Udemy courses until I get an API token 
-		var body = {
-		    "courses": [{
-		        "title": "intro to jquery",
-		        "is_paid": "true",
-		        "price": "20"
-		    }, {
-		        "title": "mastering angular",
-		        "is_paid": "false",
-		        "price": "0"
-		    }, {
-		        "title": "Creating User Experiences",
-		        "is_paid": "true",
-		        "price": "10"
-		    }]
-		};
-
-
-		connection.query("select * from course", function(err, rows, fields) {
+		console.log("Data"); 
+		console.log(body); 
+		connection.query("select * from price", function(err, rows, fields) {
 		    if (err) {
 		        throw err;
 		    }
@@ -70,5 +62,5 @@ var udemyCoursesEndpoint = "https://www.udemy.com/api-2.0/courses/";
 
 		connection.end();
 
-	//}
-//});
+	}
+});
