@@ -7,8 +7,8 @@ var transporter = nodemailer.createTransport(process.env.UDEMY_PRICE_ALERTS_SMPT
  * Pushes an email notification out to all subscribed users about the price drop 
  *
  * title - course title 
- * oldPrice - yesterday's price 
- * newPrice - today's price
+ * oldPrice - previous price 
+ * newPrice - current price
  */
 exports.notifySubscribers = function(title, oldPrice, newPrice) {
     // get all users from database 

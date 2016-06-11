@@ -1,18 +1,11 @@
 var mail = require("./mail.js");
-var mysql = require("mysql");
+var database = require("./dataaccess"); 
 
-// establish database connection 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_UDEMY_PRICES
-});
-
-connection.connect();
-
+/** 
+ * Compares each course 
+ */ 
 exports.processCourses = function(body) {
-    connection.query("select * from price", function(err, rows, fields) {
+    database.getAllPriceData(function(err, rows, fields) {
         if (err) {
             throw err;
         }
@@ -39,19 +32,7 @@ exports.processCourses = function(body) {
             });
 
             if (isNewCourse) {
-                // add course to datastore 
-                console.log("Adding new course: " + course.title + " " + course.price);
-
-                var newCourseData = {
-                    title: course.title,
-                    price: course.price.replace("$", "")
-                }
-
-                connection.query("insert into price set ?", newCourseData, function(err, result) {
-                    if (err) {
-                        throw err;
-                    }
-                });
+                database.insertCourse(course); 
             }
         });
 
