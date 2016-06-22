@@ -35,3 +35,10 @@ exports.insertCourse = function(course) {
         }
     });
 }
+
+/** 
+ * Retrieves and returns all users 
+ */ 
+ exports.getAllUsers = function(callback) {
+    connection.query("select * from users", callback); 
+ };
