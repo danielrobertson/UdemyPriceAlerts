@@ -10,8 +10,8 @@ var options = {
     }
 };
 
-//var nextUrl; 
-//do {
+var nextUrl; 
+do {
     request(options, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             // process courses to find price drops 
@@ -23,4 +23,4 @@ var options = {
 
         nextUrl = JSON.parse(body).next; 
     });
-//} while (nextUrl !== null); 
+} while (nextUrl != null); 

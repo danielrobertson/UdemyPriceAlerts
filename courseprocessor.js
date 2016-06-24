@@ -26,6 +26,7 @@ exports.processCourses = function(body) {
                         mail.notifySubscribers(course.title, row.price, newPrice);
 
                         // update database with current price so that check can repeat tomorrow 
+                        database.updateCourse(course.title, newPrice); 
                     }
                 }
 

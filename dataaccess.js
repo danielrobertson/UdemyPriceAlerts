@@ -42,3 +42,14 @@ exports.insertCourse = function(course) {
  exports.getAllUsers = function(callback) {
     connection.query("select * from user", callback); 
  };
+
+/**
+ * Updates the price of a course 
+ */ 
+ exports.updateCourse = function(title, price) {
+    connection.query("update price set price = ? where title = ?", [price, title], function(err, result){
+        if (err) {
+            throw err; 
+        }
+    });
+ }
